@@ -30,7 +30,17 @@ func WithUsage(usage func()) Option {
 	return func(args *Config) { args.Usage = usage }
 }
 
-// WithFlagInterface sets the flag parser to user
+// WithFlagInterface sets the flag parser to use
 func WithFlagInterface(fi FlagParser) Option {
 	return func(args *Config) { args.FlagInterface = fi }
+}
+
+// WithEnvInterface sets the env parser to use
+func WithEnvInterface(ei EnvParser) Option {
+	return func(args *Config) { args.EnvInterface = ei }
+}
+
+// WithFileInterface sets the file parser to use
+func WithFileInterface(fi FileParser) Option {
+	return func(args *Config) { args.FileInterface = fi }
 }

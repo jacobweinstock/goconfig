@@ -31,6 +31,8 @@ func Parse(c interface{}, opts ...Option) error {
 		FileType:      "yaml",
 		Prefix:        "APP",
 		FlagInterface: new(gflags),
+		EnvInterface:  new(envConfig),
+		FileInterface: new(yamlParser),
 	}
 
 	for _, opt := range opts {
@@ -38,8 +40,7 @@ func Parse(c interface{}, opts ...Option) error {
 	}
 
 	// parse env then cli flags to get any config file path
-	var e *envConfig
-	err := ParseEnv(log, defaultConfig.Prefix, c, e)
+	err := ParseEnv(log, defaultConfig.Prefix, c, defaultConfig.EnvInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing env vars")
 	}
@@ -50,18 +51,17 @@ func Parse(c interface{}, opts ...Option) error {
 	}
 
 	// Read the config file
-	var y *yamlParser
 	filename := getConfigValue(c)
 	if filename == "" {
 		filename = defaultConfig.File
 	}
-	err = ParseConfigFile(log, filename, c, y)
+	err = ParseConfigFile(log, filename, c, defaultConfig.FileInterface)
 	if err != nil {
 		log.V(1).Info("file not found", "file", filename)
 	}
 
 	// Overwrite config with environment variables
-	err = ParseEnv(log, defaultConfig.Prefix, c, e)
+	err = ParseEnv(log, defaultConfig.Prefix, c, defaultConfig.EnvInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing env vars")
 	}
