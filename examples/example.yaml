@@ -1,0 +1,8 @@
+---
+consumertoken: 12345
+apikey: abc123def
+facility: ny5
+hardwareids:
+  - "691C41FA-552E-4FD5-B576-635B8AC4FED6"
+  - "69B007DB-6D43-463A-A547-602E7826FF5D"
+  - "96EA8AE5-B21A-46F5-9DD1-355E780852D0"
