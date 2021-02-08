@@ -7,6 +7,7 @@ import (
 )
 
 func TestParse(t *testing.T) {
+	t.Skip("WIP")
 	type config struct {
 		ConsumerToken string
 		APIKey        string
