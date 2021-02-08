@@ -29,3 +29,8 @@ func WithFileType(fileType string) Option {
 func WithUsage(usage func()) Option {
 	return func(args *Config) { args.Usage = usage }
 }
+
+// WithFlagInterface sets the flag parser to user
+func WithFlagInterface(fi FlagParser) Option {
+	return func(args *Config) { args.FlagInterface = fi }
+}

@@ -9,6 +9,18 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// FileParser interface for configuration files
+type FileParser interface {
+	// Parse config file  and update the config
+	// interface with the values
+	Parse(log logr.Logger, name string, config interface{}) error
+}
+
+// ParseConfigFile parses a config file
+func ParseConfigFile(log logr.Logger, name string, config interface{}, p FileParser) error {
+	return p.Parse(log, name, config)
+}
+
 type yamlParser struct{}
 
 func (y *yamlParser) Parse(log logr.Logger, filename string, config interface{}) error {
