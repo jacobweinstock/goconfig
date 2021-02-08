@@ -16,8 +16,8 @@ type config struct {
 }
 
 func main() {
-	var cfg config
-	err := goconfig.Parse(&cfg, goconfig.WithPrefix("TEST"))
+	cfg :=config{Workers: 4}
+	err := goconfig.Parse(&cfg, goconfig.WithPrefix("TEST"), goconfig.WithFile("example.yaml"))
 	if err != nil {
 		fmt.Println(err)
 	}
