@@ -9,7 +9,6 @@ import (
 	"github.com/go-logr/logr"
 	"github.com/hashicorp/go-multierror"
 	"github.com/jacobweinstock/registrar"
-	"github.com/mitchellh/mapstructure"
 	"github.com/pelletier/go-toml"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
@@ -20,14 +19,11 @@ const (
 	fileInterfaceProtocolYaml = "yaml"
 	fileInterfaceNameJSON     = "json"
 	fileInterfaceProtocolJSON = "json"
-	fileInterfaceNameTOML     = "json"
-	fileInterfaceProtocolTOML = "json"
 )
 
 var (
 	fileInterfaceFeaturesYaml = registrar.Features{"yaml", "yml"}
 	fileInterfaceFeaturesJSON = registrar.Features{"json"}
-	fileInterfaceFeaturesTOML = registrar.Features{"toml"}
 )
 
 // FileParser interface for configuration files
@@ -97,7 +93,7 @@ func (j *jsonParser) Parse(log logr.Logger, filename string, config interface{})
 	return json.Unmarshal(file, config)
 }
 
-type tomlParser struct{}
+type tomlParser struct{} // nolint
 
 // Parse toml file, WIP
 func (t *tomlParser) Parse(log logr.Logger, filename string, config interface{}) error {
@@ -107,19 +103,4 @@ func (t *tomlParser) Parse(log logr.Logger, filename string, config interface{})
 	}
 
 	return toml.Unmarshal(file, config)
-}
-
-// decodeMap decodes a map of values into result using the mapstructure library.
-func decodeMap(m map[string]interface{}, result interface{}) error {
-	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{
-		WeaklyTypedInput: true,
-		Result:           result,
-		DecodeHook: mapstructure.ComposeDecodeHookFunc(
-			mapstructure.StringToTimeDurationHookFunc(),
-		),
-	})
-	if err != nil {
-		return err
-	}
-	return dec.Decode(m)
 }
