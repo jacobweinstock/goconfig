@@ -45,7 +45,7 @@ func NewParser(opts ...Option) *Parser {
 // Parse a config file, env vars and cli flags (override is in that order).
 //
 // The fields of the confStruct passed in must be exported (uppercase).
-// 
+//
 // CLI flags by default split camelCase field names with dashes.
 // e.x. `KeyOne` would be a cli flag of `-key-one`.
 // To modify this, add a struct tag.
