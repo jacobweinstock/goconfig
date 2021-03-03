@@ -50,7 +50,7 @@ func ParseFile(log logr.Logger, name string, config interface{}, o []FileParser)
 	if fileParsed {
 		return nil
 	}
-	return multierror.Append(err, errors.New("failed to open connection"))
+	return multierror.Append(err, errors.New("failed to parse file"))
 }
 
 // ParseFileFromInterfaces pass through to ParseFile function

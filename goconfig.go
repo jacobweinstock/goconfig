@@ -28,7 +28,6 @@ func NewParser(opts ...Option) *Parser {
 	c := &Parser{
 		Logger:        log,
 		File:          "config.yaml",
-		Prefix:        "APP",
 		FlagInterface: new(gflags),
 		EnvInterface:  new(envConfig),
 		FileInterface: registrar.NewRegistry(registrar.WithLogger(log)),
