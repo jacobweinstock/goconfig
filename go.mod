@@ -12,5 +12,7 @@ require (
 	github.com/packethost/pkg/log/logr v0.0.0-20210106215246-8e2e62dc8f0c
 	github.com/pelletier/go-toml v1.8.1
 	github.com/pkg/errors v0.9.1
-	gopkg.in/yaml.v2 v2.2.8
+	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
+	golang.org/x/tools v0.0.0-20201021000207-d49c4edd7d96 // indirect
+	gopkg.in/yaml.v2 v2.4.0
 )

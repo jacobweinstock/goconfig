@@ -42,39 +42,44 @@ func NewParser(opts ...Option) *Parser {
 	return c
 }
 
-// Parse config file, env vars and cli flags
-func (c *Parser) Parse(d interface{}) error {
+// Parse a config file, env vars and cli flags (override is in that order)
+// The fields of the confStruct passed in must be exported (uppercase)
+// CLI flags by default split camelCase field names with dashes
+// e.x. `KeyOne` would be a cli flag of `-key-one`
+// To modify this, add a struct tag
+// KeyOne string `flag:"keyone"` will give you a cli flag of `-keyone`
+func (c *Parser) Parse(confStruct interface{}) error {
 
 	// parse env then cli flags to get any config file path
-	err := ParseEnv(c.Logger, c.Prefix, d, c.EnvInterface)
+	err := ParseEnv(c.Logger, c.Prefix, confStruct, c.EnvInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing env vars")
 	}
 	//var f *gflags
-	err = ParseFlags(c.Logger, d, c.FlagInterface)
+	err = ParseFlags(c.Logger, confStruct, c.FlagInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing cli flags")
 	}
 
 	// Read the config file
-	filename := getConfigValue(d)
+	filename := getConfigValue(confStruct)
 	if filename == "" {
 		filename = c.File
 	}
 
-	err = ParseFileFromInterfaces(c.Logger, filename, d, c.FileInterface.GetDriverInterfaces())
+	err = ParseFileFromInterfaces(c.Logger, filename, confStruct, c.FileInterface.GetDriverInterfaces())
 	if err != nil {
 		c.Logger.V(0).Info("problem parsing file", "file", filename, "error", err.Error())
 	}
 
 	// Overwrite config with environment variables
-	err = ParseEnv(c.Logger, c.Prefix, d, c.EnvInterface)
+	err = ParseEnv(c.Logger, c.Prefix, confStruct, c.EnvInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing env vars")
 	}
 
 	// Overwrite config with command line args
-	err = ParseFlags(c.Logger, d, c.FlagInterface)
+	err = ParseFlags(c.Logger, confStruct, c.FlagInterface)
 	if err != nil {
 		return errors.WithMessage(err, "error parsing cli flags")
 	}
