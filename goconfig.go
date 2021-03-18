@@ -1,13 +1,15 @@
 package goconfig
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 
 	"github.com/go-logr/logr"
+	"github.com/go-logr/zapr"
 	"github.com/jacobweinstock/registrar"
+	"go.uber.org/zap"
 
-	plogr "github.com/packethost/pkg/log/logr"
 	"github.com/pkg/errors"
 )
 
@@ -24,7 +26,7 @@ type Parser struct {
 
 // NewParser parser struct
 func NewParser(opts ...Option) *Parser {
-	log, _, _ := plogr.NewPacketLogr()
+	log := defaultLogger()
 	c := &Parser{
 		Logger:        log,
 		File:          "config.yaml",
@@ -108,4 +110,16 @@ func getConfigValue(config interface{}) string {
 		}
 	}
 	return name
+}
+
+// defaultLogger is zap logr implementation
+func defaultLogger() logr.Logger {
+	config := zap.NewProductionConfig()
+	config.OutputPaths = []string{"stdout"}
+	zapLogger, err := config.Build()
+	if err != nil {
+		panic(fmt.Sprintf("who watches the watchmen (%v)?", err))
+	}
+
+	return zapr.NewLogger(zapLogger)
 }

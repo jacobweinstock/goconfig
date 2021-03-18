@@ -8,11 +8,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/jacobweinstock/registrar"
-	plogr "github.com/packethost/pkg/log/logr"
 )
 
 func TestNewParser(t *testing.T) {
-	log, _, _ := plogr.NewPacketLogr()
+	log := defaultLogger()
 	usage := func() {}
 	flagI := &gflags{}
 	envI := &envConfig{}

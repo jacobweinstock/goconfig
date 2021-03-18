@@ -8,7 +8,7 @@
 
 ## Usage
 
-`example/main.go`
+`go run examples/main.go -config examples/example.yaml`
 
 ```go
 package main
