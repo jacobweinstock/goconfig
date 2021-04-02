@@ -7,9 +7,9 @@ import (
 )
 
 type config struct {
-	ConsumerToken string `flag:"consumertoken"`
-	APIKey        string `flag:"apikey"`
-	Facility      string
+	ConsumerToken string   `flag:"consumertoken"`
+	APIKey        string   `flag:"apikey"`
+	Facility      string   `valid:"required"`
 	HardwareIDs   []string `flag:"hardwareids"`
 	Workers       int
 	Config        string
@@ -20,7 +20,7 @@ func main() {
 	config := goconfig.NewParser(goconfig.WithPrefix("TEST"), goconfig.WithFile("example.yaml"))
 	err := config.Parse(&cfg)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	fmt.Printf("%+v\n", cfg)
 }

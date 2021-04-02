@@ -3,6 +3,7 @@ module github.com/jacobweinstock/goconfig
 go 1.15
 
 require (
+	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
 	github.com/go-logr/logr v0.4.0
 	github.com/go-logr/zapr v0.3.0
 	github.com/google/go-cmp v0.5.4

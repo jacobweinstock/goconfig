@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/go-logr/logr"
 	"github.com/go-logr/zapr"
 	"github.com/jacobweinstock/registrar"
@@ -88,7 +89,15 @@ func (c *Parser) Parse(confStruct interface{}) error {
 		return errors.WithMessage(err, "error parsing cli flags")
 	}
 
-	return nil
+	return validateRequired(confStruct)
+}
+
+// validateRequired will look at the struct tags for a `valid:"required"` tag
+// and make sure those fields have a value.
+// If a default value is specified for a required field that will satisfy
+func validateRequired(config interface{}) error {
+	_, err := govalidator.ValidateStruct(config)
+	return err
 }
 
 func (c *Parser) registerFileInterfaces() {
