@@ -74,7 +74,7 @@ func (c *Parser) Parse(confStruct interface{}) error {
 
 	err = ParseFileFromInterfaces(c.Logger, filename, confStruct, c.FileInterface.GetDriverInterfaces())
 	if err != nil {
-		c.Logger.V(0).Info("problem parsing file", "file", filename, "error", err.Error())
+		c.Logger.V(1).Info("problem parsing file", "file", filename, "error", err.Error())
 	}
 
 	// Overwrite config with environment variables
